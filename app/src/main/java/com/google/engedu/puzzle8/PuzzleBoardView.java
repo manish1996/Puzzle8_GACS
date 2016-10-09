@@ -105,14 +105,18 @@ public class PuzzleBoardView extends View {
             PuzzleBoard bestState=priorityQueue.poll();
             if(bestState.resolved()){
                 ArrayList<PuzzleBoard> steps=new ArrayList<>();
-                        while(bestState.getPreviousBoard()!=null){
-                            steps.add(bestState);
-                            bestState=bestState.getPreviousBoard();
+                while(bestState.getPreviousBoard()!=null){
+                    steps.add(bestState);
+                    bestState=bestState.getPreviousBoard();
 
                         }
                 Collections.reverse(steps);
                 animation =steps;
                 invalidate();
+                break;
+            }
+            else{// first traversal
+                priorityQueue.addAll(bestState.neighbours());
             }
         }
 

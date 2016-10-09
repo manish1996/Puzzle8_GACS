@@ -30,7 +30,7 @@ public class PuzzleActivity extends AppCompatActivity {
         // Some setup of the view.
         boardView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         container.addView(boardView);
-        imageview=(ImageView) findViewById(R.id.imageview);
+        //imageview=(ImageView) findViewById(R.id.imageview);
     }
 
     @Override
@@ -69,6 +69,7 @@ public class PuzzleActivity extends AppCompatActivity {
             // image's datatype is bitmap
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             boardView.initialize(imageBitmap,container);
+            boardView.invalidate();
         }
     }
 

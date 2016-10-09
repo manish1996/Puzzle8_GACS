@@ -160,7 +160,7 @@ public class PuzzleBoard {
      int manhattan_Distance=0;
         for(int i=0;i<NUM_TILES*NUM_TILES;i++){
             PuzzleTile tile=tiles.get(i);
-            if(tiles!=null){
+            if(tile!=null){
                 int correctPosition=tile.getNumber();
                 int correctX=correctPosition %NUM_TILES;
                 int correctY=correctPosition/NUM_TILES;
