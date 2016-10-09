@@ -16,8 +16,18 @@ public class PuzzleBoard {
             { 0, 1 }
     };
     private ArrayList<PuzzleTile> tiles;
+    private PuzzleBoard previousBoard;
+    private int stepNumber=0;
+    public PuzzleBoard getPreviousBoard() {
+        return previousBoard;
+    }
+
+    public void setPreviousBoard(PuzzleBoard previousBoard) {
+        this.previousBoard = previousBoard;
+    }
 
     PuzzleBoard(Bitmap bitmap, int parentWidth) {
+        stepNumber=0;
         tiles=new ArrayList<>();
         Bitmap resizedBitmap=Bitmap.createScaledBitmap(bitmap,parentWidth,parentWidth,false);
         for(int i=0;i<NUM_TILES;i++){
@@ -40,9 +50,10 @@ public class PuzzleBoard {
 
     }
 
-    PuzzleBoard(PuzzleBoard otherBoard) {
+    PuzzleBoard(PuzzleBoard otherBoard, int stepNumber) {
+        previousBoard=otherBoard;
         tiles = (ArrayList<PuzzleTile>) otherBoard.tiles.clone();
-    }
+        this.stepNumber=stepNumber+1;}
 
     public void reset() {
         // Nothing for now but you may have things to reset once you implement the solver.
@@ -112,8 +123,36 @@ public class PuzzleBoard {
         tiles.set(j, temp);
     }
 
-    public ArrayList<PuzzleBoard> neighbours() {
-        return null;
+    public static ArrayList<PuzzleBoard> neighbours() {
+        ArrayList<PuzzleBoard> neighbours=new ArrayList<>();
+        int emptyTilei=0;
+        int emptytilej=0;
+
+        for(int x=0; x<NUM_TILES*NUM_TILES;x++){
+            if(tiles.get(x)==null){
+                emptytilej=x%NUM_TILES;
+                emptyTilei=x/NUM_TILES;
+                break;
+            }
+        }
+        for(int[] coordinates : NEIGHBOUR_COORDS){
+            int neighbourj=emptytilej+coordinates[0];
+            int neighbouri=emptyTilei+coordinates[1];
+            if(neighbourj>=0 && neighbourj<NUM_TILES &&
+                    neighbouri>=0 && neighbouri<NUM_TILES){
+                PuzzleBoard neighbourBoard=
+                        new PuzzleBoard(this,stepNumber);
+
+                neighbourBoard.swapTiles(
+                        XYtoIndex(neighbourj,neighbouri),
+                        XYtoIndex(emptytilej,emptyTilei)
+                );
+                neighbours.add(neighbourBoard);
+            }
+
+        }
+
+        return neighbours;
     }
 
     public int priority() {
