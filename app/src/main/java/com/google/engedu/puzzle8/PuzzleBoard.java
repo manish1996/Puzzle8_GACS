@@ -123,7 +123,7 @@ public class PuzzleBoard {
         tiles.set(j, temp);
     }
 
-    public static ArrayList<PuzzleBoard> neighbours() {
+    public ArrayList<PuzzleBoard> neighbours() {
         ArrayList<PuzzleBoard> neighbours=new ArrayList<>();
         int emptyTilei=0;
         int emptytilej=0;
@@ -155,8 +155,23 @@ public class PuzzleBoard {
         return neighbours;
     }
 
-    public int priority() {
-        return 0;
+    public int priority()
+    {
+     int manhattan_Distance=0;
+        for(int i=0;i<NUM_TILES*NUM_TILES;i++){
+            PuzzleTile tile=tiles.get(i);
+            if(tiles!=null){
+                int correctPosition=tile.getNumber();
+                int correctX=correctPosition %NUM_TILES;
+                int correctY=correctPosition/NUM_TILES;
+                int currentX=i%NUM_TILES;
+                int currentY=i%NUM_TILES;
+                manhattan_Distance+=Math.abs(currentX-correctX)+
+                        Math.abs(currentY-correctY);
+            }
+        }
+
+        return manhattan_Distance+stepNumber;
     }
 
 }

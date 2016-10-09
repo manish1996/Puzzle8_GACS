@@ -9,6 +9,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 public class PuzzleBoardView extends View {
@@ -18,6 +22,13 @@ public class PuzzleBoardView extends View {
     private ArrayList<PuzzleBoard> animation;
     private Random random = new Random();
 
+    private Comparator<PuzzleBoard> comparator=
+            new Comparator<PuzzleBoard>() {
+                @Override
+                public int compare(PuzzleBoard lhs, PuzzleBoard rhs) {
+                    return lhs.priority()-rhs.priority();
+                }
+            };
     public PuzzleBoardView(Context context) {
         super(context);
         activity = (Activity) context;
@@ -54,9 +65,9 @@ public class PuzzleBoardView extends View {
     public void shuffle() {
         if (animation == null && puzzleBoard != null) {
             for(int i=0;i<NUM_SHUFFLE_STEPS;i++) {
-                ArrayList<PuzzleBoard> neighbours = PuzzleBoard.neighbours();
-                int randomInt = random.nextInt(neighbours.size());
-                puzzleBoard = neighbours.get(randomInt);
+                ArrayList<PuzzleBoard> neighbourBoard = puzzleBoard.neighbours();
+                int randomInt = random.nextInt(neighbourBoard.size());
+                puzzleBoard = neighbourBoard.get(randomInt);
 
             }
             invalidate();
@@ -83,6 +94,27 @@ public class PuzzleBoardView extends View {
 
     public void solve() {
 
+        PriorityQueue<PuzzleBoard> priorityQueue=
+                new PriorityQueue<>(1,comparator);
+        PuzzleBoard currentBoard=
+                new PuzzleBoard(puzzleBoard,-1);
+        currentBoard.setPreviousBoard(null);
+        priorityQueue.add(currentBoard);
+
+        while(!priorityQueue.isEmpty()){
+            PuzzleBoard bestState=priorityQueue.poll();
+            if(bestState.resolved()){
+                ArrayList<PuzzleBoard> steps=new ArrayList<>();
+                        while(bestState.getPreviousBoard()!=null){
+                            steps.add(bestState);
+                            bestState=bestState.getPreviousBoard();
+
+                        }
+                Collections.reverse(steps);
+                animation =steps;
+                invalidate();
+            }
+        }
 
 
 
