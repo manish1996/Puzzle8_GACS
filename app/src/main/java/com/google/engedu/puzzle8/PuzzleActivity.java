@@ -18,13 +18,14 @@ public class PuzzleActivity extends AppCompatActivity {
     private Bitmap imageBitmap = null;
     private PuzzleBoardView boardView;
     private ImageView imageview;
+    private RelativeLayout container;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
 
         // This code programmatically adds the PuzzleBoardView to the UI.
-        RelativeLayout container = (RelativeLayout) findViewById(R.id.puzzle_container);
+        container = (RelativeLayout) findViewById(R.id.puzzle_container);
         boardView = new PuzzleBoardView(this);
         // Some setup of the view.
         boardView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -67,7 +68,7 @@ public class PuzzleActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             // image's datatype is bitmap
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageview.setImageBitmap(imageBitmap);
+            boardView.initialize(imageBitmap,container);
         }
     }
 

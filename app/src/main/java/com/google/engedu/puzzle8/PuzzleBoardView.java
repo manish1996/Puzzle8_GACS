@@ -24,10 +24,10 @@ public class PuzzleBoardView extends View {
         animation = null;
     }
 
-    public void initialize(Bitmap imageBitmap) {
+    public void initialize(Bitmap imageBitmap, View parent) {
         int width = getWidth();
         puzzleBoard = new PuzzleBoard(imageBitmap, width);
-        
+
     }
 
     @Override
