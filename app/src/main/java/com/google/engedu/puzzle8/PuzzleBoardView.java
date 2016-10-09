@@ -27,6 +27,7 @@ public class PuzzleBoardView extends View {
     public void initialize(Bitmap imageBitmap) {
         int width = getWidth();
         puzzleBoard = new PuzzleBoard(imageBitmap, width);
+        
     }
 
     @Override
